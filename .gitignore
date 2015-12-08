@@ -1,0 +1,11 @@
+# Gradle Stuff
+.gradle/
+gradle/
+gradlew
+
+# Compiled Files
+*.jar
+*.class
+
+#Others
+*.MF

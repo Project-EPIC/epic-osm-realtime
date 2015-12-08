@@ -1,0 +1,58 @@
+plugins {
+  id 'java'
+  id 'scala'
+  id 'application'
+  id 'com.github.johnrengelman.shadow' version '1.2.2'      //ShadowJar
+}
+
+repositories {
+  mavenLocal()
+  jcenter()
+  maven {
+    url 'https://oss.sonatype.org/content/repositories/snapshots' //Needed for geow
+  }
+  mavenCentral()
+}
+ 
+mainClassName = 'SparkEpicOSM'
+
+dependencies {
+    //Compile against Scala 2.11
+    compile group: 'org.scala-lang',         name: 'scala-library',    version: '2.11.7'
+
+    //Geow Library
+    compile group: 'io.plasmap',             name: 'geow_2.11',        version: '0.3.11-SNAPSHOT'
+
+  //Test Dependencies:
+  //testCompile group: 'jline',              name: 'jline',            version: '2.11'
+  // compile group: 'com.github.nscala-time', name: 'nscala-time_2.11', version: '2.4.0'
+
+}
+
+ 
+/*
+
+Protobuf Compiling, not needed if using geow
+
+//Add Plugin: // id 'com.github.rafael-brandao.scalabuff' version '0.2.0'
+
+This handles the protobuf compiling:
+apply plugin: 'com.github.rafael-brandao.scalabuff'
+scalabuff {
+    sourceSets {
+        proto {
+            srcDirs = ['src/protobufs']
+        }
+    }
+
+    //outputDir             = file("${project.buildDir}/scalabuff") // read-only                             
+    //generatedSourcesDir   = file("${scalabuff.outputDir}/generated-sources") // read-only
+    //generatedResourcesDir = file("${scalabuff.outputDir}/generated-resources") // read-only
+
+    failIfProtocNotDetected  = true
+    generateDescriptors      = false
+    protocPath               = 'protoc'
+}
+
+*/
+
