@@ -13,6 +13,19 @@ repositories {
   }
   mavenCentral()
 }
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main']
+        }
+    }
+    test {
+        scala {
+            srcDirs = ['test/scala']
+        }
+    }
+}
  
 mainClassName = 'SparkEpicOSM'
 
@@ -55,4 +68,3 @@ scalabuff {
 }
 
 */
-
