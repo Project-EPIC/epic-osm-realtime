@@ -13,21 +13,8 @@ repositories {
   }
   mavenCentral()
 }
-
-sourceSets {
-    main {
-        scala {
-            srcDirs = ['src/main']
-        }
-    }
-    test {
-        scala {
-            srcDirs = ['test/scala']
-        }
-    }
-}
  
-mainClassName = 'SparkEpicOSM'
+mainClassName = 'edu.colorado.cs.epic.SparkEpicOSM'
 
 dependencies {
     //Compile against Scala 2.11
@@ -35,6 +22,10 @@ dependencies {
 
     //Geow Library
     compile group: 'io.plasmap',             name: 'geow_2.11',        version: '0.3.11-SNAPSHOT'
+
+    //Jackson
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.11', version: '2.6.3'
+
 
   //Test Dependencies:
   //testCompile group: 'jline',              name: 'jline',            version: '2.11'

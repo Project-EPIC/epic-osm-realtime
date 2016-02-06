@@ -11,11 +11,29 @@ object SparkEpicOSM {
   def main(args: Array[String]) {
 
     println("Hello World")
-    println("Learning how to Open PBF Files in Scala...")
+    //println("Learning how to Open PBF Files in Scala...")
 
-    var file = "/Users/jenningsanderson/Documents/OSM/Extracts/honolulu.osm.pbf"
+    println("Parsing JSON Streams in Scala/Spark")
 
-    val reader = EpicOSM.read_pbf(file)
+    // var inFile = Paths.get("test/meta_changeset_way_change.json").toAbsolutePath.normalize
+    var inFile = Paths.get("test/meta_changeset_medium.json").toAbsolutePath.normalize
+    
+    var strings = get_stuff(inFile)
+
+    //println(string)
+
+    val metaObjects = strings.map( PlanetStreamParser.parseObject(_) )
+
+    metaObjects.foreach{o =>
+      println(o.id + " " + o.user);
+      println("nodes: " + o.nodes.length);
+      println("ways: "  + o.ways.length);
+      println("deleted: " + o.deleted_items.length)
+    }
+
+    //var file = "/Users/jenningsanderson/Documents/OSM/Extracts/honolulu.osm.pbf"
+
+    //val reader = EpicOSM.read_pbf(file)
 
     // val t2 = """{"id":"tag:search.twitter.com,2005:268922234935066624","objectType":"activity","actor":{"objectType":"person","id":"id:twitter.com:80948607","link":"http://www.twitter.com/soflaliving","displayName":"Tim Martin","postedTime":"2009-10-08T21:30:05.000Z","image":"https://si0.twimg.com/profile_images/530970514/DSC07297_normal.JPG","summary":"Real Estate Professional in Florida - Residential or Commerical - Buy or Sell, from Palm Beach To Stuart!  Retire To The Sunshine State!","links":[{"href":null,"rel":"me"}],"friendsCount":612,"followersCount":633,"listedCount":11,"statusesCount":23286,"twitterTimeZone":"Quito","verified":false,"utcOffset":"-18000","preferredUsername":"soflaliving","languages":["en"],"location":{"objectType":"place","displayName":"Palm Beach Gardens, Florida"},"favoritesCount":0},"verb":"share","postedTime":"2012-11-15T03:43:51.000Z","generator":{"displayName":"TweetDeck","link":"http://www.tweetdeck.com"},"provider":{"objectType":"service","displayName":"Twitter","link":"http://www.twitter.com"},"link":"http://twitter.com/soflaliving/statuses/268922234935066624","body":"RT @jtLOL: WSVN-TV - Almost 1K ballots found in Broward elections warehouse http://t.co/9DEz2PeG","object":{"id":"tag:search.twitter.com,2005:268877932519378944","objectType":"activity","actor":{"objectType":"person","id":"id:twitter.com:11203972","link":"http://www.twitter.com/jtLOL","displayName":"Jim Treacher","postedTime":"2007-12-15T20:59:10.000Z","image":"https://si0.twimg.com/profile_images/2163908711/DontEatMyDog_normal.jpg","summary":"","links":[{"href":"http://dailycaller.com/section/dc-trawler","rel":"me"}],"friendsCount":2963,"followersCount":21596,"listedCount":1182,"statusesCount":47303,"twitterTimeZone":"Eastern Time (US & Canada)","verified":false,"utcOffset":"-18000","preferredUsername":"jtLOL","languages":["en"],"location":{"objectType":"place","displayName":"http://thedc.com/x1yuQh"},"favoritesCount":4},"verb":"post","postedTime":"2012-11-15T00:47:49.000Z","generator":{"displayName":"Tweet Button","link":"http://twitter.com/tweetbutton"},"provider":{"objectType":"service","displayName":"Twitter","link":"http://www.twitter.com"},"link":"http://twitter.com/jtLOL/statuses/268877932519378944","body":"WSVN-TV - Almost 1K ballots found in Broward elections warehouse http://t.co/9DEz2PeG","object":{"objectType":"note","id":"object:search.twitter.com,2005:268877932519378944","summary":"WSVN-TV - Almost 1K ballots found in Broward elections warehouse http://t.co/9DEz2PeG","link":"http://twitter.com/jtLOL/statuses/268877932519378944","postedTime":"2012-11-15T00:47:49.000Z"},"twitter_entities":{"urls":[{"expanded_url":"http://www.wsvn.com/news/articles/politics/21009052826783/almost-1k-ballots-found-in-broward-elections-warehouse/","indices":[65,85],"display_url":"wsvn.com/news/articles/…","url":"http://t.co/9DEz2PeG"}],"hashtags":[],"user_mentions":[]}},"twitter_entities":{"urls":[{"expanded_url":"http://www.wsvn.com/news/articles/politics/21009052826783/almost-1k-ballots-found-in-broward-elections-warehouse/","indices":[76,96],"display_url":"wsvn.com/news/articles/…","url":"http://t.co/9DEz2PeG"}],"hashtags":[],"user_mentions":[{"indices":[3,9],"screen_name":"jtLOL","id_str":"11203972","name":"Jim Treacher","id":11203972}]},"retweetCount":13,"gnip":{"matching_rules":[{"value":"from:20536357 OR from:378786790 OR from:33601736 OR from:54459679 OR from:80948607 OR from:19041199 OR from:13017662 OR from:27938990 OR from:177497027 OR from:58957417 OR from:188982269 OR from:35664799 OR from:71048920 OR from:274629078 OR from:198600686 OR from:801023155 OR from:82689705 OR from:625104277 OR from:43736643 OR from:75561626 OR from:278659206 OR from:18779683 OR from:18242668 OR from:7538352 OR from:439983001","tag":"red_hook"}],"urls":[{"url":"http://t.co/9DEz2PeG","expanded_url":"http://www.wsvn.com/news/articles/politics/21009052826783/almost-1k-ballots-found-in-broward-elections-warehouse/"}],"language":{"value":"en"}}}"""
 
@@ -41,11 +59,11 @@ object SparkEpicOSM {
   }
 
   //Based on github.com/kenbod/scala_parse_json
-  // private def get_tweets(input: Path) = {
-  //   val handle = io.Source.fromFile(input.toFile)
-  //   val data   = handle.mkString
-  //   handle.close // close input file
-  //   data.split("\n")
-  // }
+  def get_stuff(input: Path) = {
+    val handle = scala.io.Source.fromFile(input.toFile)
+    val data   = handle.mkString
+    handle.close // close input file
+    data.split("\n")
+  }
 
 }
