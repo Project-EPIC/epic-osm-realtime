@@ -8,6 +8,12 @@ gradlew
 *.class
 build/
 
-#Others
+# Others
 *.MF
 /bin/
+
+# Eclipse?
+.cache-main
+.classpath
+.project
+.settings/
